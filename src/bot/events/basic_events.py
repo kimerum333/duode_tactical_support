@@ -1,7 +1,9 @@
 from discord.ext import commands
-import logging
+from bot.config import log_config
+from bot.services.authorization import require_min_role
+from bot.models.members import RoleLevel
 
-logger = logging.getLogger()
+logger = log_config.setup_logger()
 
 
 class BasicCog(commands.Cog):
@@ -31,12 +33,19 @@ class BasicCog(commands.Cog):
         logger.info(f"'{ctx.command}' 명령어가 '{user_name}'에 의해 호출되었습니다.")
         
         # ctx.send()를 사용하면 명령어가 입력된 채널로 바로 메시지를 보낼 수 있습니다.
-        await ctx.send(f'안녕하세요, {ctx.author.mention}! `events.py` 파일이 정상적으로 로드되었습니다.')
+        await ctx.send(f'안녕하세요, {ctx.author.mention}! `basic_events.py` 파일이 정상적으로 로드되었습니다.')
 
+    @commands.command(name='관리자확인')
+    @require_min_role(RoleLevel.ADMIN)
+    async def admin_only(self, ctx: commands.Context):
+        """
+        관리자 권한 확인 명령어입니다.
+        """
+        await ctx.send(f'관리자 권한 확인 완료: {ctx.author.mention}')
 
 async def setup(bot: commands.Bot):
     """
-    이 setup 함수는 main.py에서 bot.load_extension('app.src.events')를 호출할 때
+    이 setup 함수는 main.py에서 bot.load_extension('bot.events.events')를 호출할 때
     필수적으로 실행되는 진입점입니다.
     """
     # BasicCog 클래스의 인스턴스를 생성하여 봇에 Cog로 추가합니다.
