@@ -6,6 +6,7 @@ from bot.events import basic_events, member_events
 from bot.events import lottery_events
 from bot.events import admin_events
 from bot.events import vault_events
+from bot.events import help_events
 from bot.guards import auth_guard
     
 logger = log_config.setup_logger()
@@ -25,6 +26,7 @@ modules_to_setup = [
     lottery_events,
     admin_events,
     vault_events,
+    help_events,
 ]
 
 @bot.event

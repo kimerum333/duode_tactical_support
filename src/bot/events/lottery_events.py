@@ -15,6 +15,10 @@ class LotteryCog(commands.Cog):
 
     @commands.command(name="복권")
     async def lottery(self, ctx: commands.Context):
+        """
+        복권 사용: 달란트 1 소모 후 1~1205g를 금고에 입금합니다.
+        사용법: !복권
+        """
         if ctx.guild is None:
             await ctx.send("길드(서버) 안에서만 사용할 수 있습니다.")
             return
@@ -37,6 +41,10 @@ class LotteryCog(commands.Cog):
 
     @commands.command(name="복권통계")
     async def lottery_stats(self, ctx: commands.Context):
+        """
+        복권 내역과 수익 요약을 출력합니다.
+        사용법: !복권통계
+        """
         if ctx.guild is None:
             await ctx.send("길드(서버) 안에서만 사용할 수 있습니다.")
             return

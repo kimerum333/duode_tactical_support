@@ -21,25 +21,20 @@ class BasicCog(commands.Cog):
         logger.info(f"{self.bot.user} (ID: {self.bot.user.id}) 가 성공적으로 연결되었습니다.")
 
     # name을 지정하지 않으면 함수 이름(test_command)이 명령어 이름이 됩니다.
-    @commands.command(name='테스트')
-    async def test_command(self, ctx: commands.Context):
-        """
-        Cog 로드가 정상적으로 되었는지 테스트하기 위한 간단한 명령어입니다.
-        사용자가 '!테스트'를 입력하면 실행됩니다.
-        """
-        # ctx (Context) 객체에는 메시지에 대한 모든 정보(보낸 사람, 채널 등)가 담겨있습니다.
-        guild_name = ctx.guild.name
-        user_name = ctx.author.name
-        logger.info(f"'{ctx.command}' 명령어가 '{user_name}'에 의해 호출되었습니다.")
-        
-        # ctx.send()를 사용하면 명령어가 입력된 채널로 바로 메시지를 보낼 수 있습니다.
-        await ctx.send(f'안녕하세요, {ctx.author.mention}! `basic_events.py` 파일이 정상적으로 로드되었습니다.')
+    # @commands.command(name='테스트')
+    # async def test_command(self, ctx: commands.Context):
+    #     """
+    #     (사용 중지) 봇 동작 확인용 테스트 명령어. 현재는 비활성화됨.
+    #     사용법: !테스트
+    #     """
+    #     logger.info("테스트 명령 호출(현재 비활성화 상태)")
 
     @commands.command(name='관리자확인')
     @require_min_role(RoleLevel.ADMIN)
     async def admin_only(self, ctx: commands.Context):
         """
-        관리자 권한 확인 명령어입니다.
+        관리자 권한 확인(ADMIN 이상) 명령어.
+        사용법: !관리자확인
         """
         await ctx.send(f'관리자 권한 확인 완료: {ctx.author.mention}')
 

@@ -15,6 +15,10 @@ class VaultCog(commands.Cog):
 
     @commands.command(name="잔고확인")
     async def check_balance(self, ctx: commands.Context):
+        """
+        본인 금고 잔액을 확인합니다.
+        사용법: !잔고확인
+        """
         if ctx.guild is None:
             await ctx.send("길드(서버) 안에서만 사용할 수 있습니다.")
             return
@@ -31,6 +35,10 @@ class VaultCog(commands.Cog):
 
     @commands.command(name="인출")
     async def withdraw(self, ctx: commands.Context, amount: int):
+        """
+        금고에서 지정 금액을 인출합니다.
+        사용법: !인출 {금액}
+        """
         if ctx.guild is None:
             await ctx.send("길드(서버) 안에서만 사용할 수 있습니다.")
             return

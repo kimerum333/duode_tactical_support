@@ -19,6 +19,10 @@ class AdminEvents(commands.Cog):
     @commands.command(name="달란트지급")
     @require_min_role(RoleLevel.ADMIN)
     async def grant_talent(self, ctx: commands.Context, target_nick: str, amount: int):
+        """
+        ADMIN 이상만 사용 가능. 대상 서버닉네임에게 달란트를 지급합니다.
+        사용법: !달란트지급 {서버닉네임} {지급갯수}
+        """
         if ctx.guild is None:
             await ctx.send("길드(서버) 안에서만 사용할 수 있습니다.")
             return
