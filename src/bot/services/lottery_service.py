@@ -10,6 +10,7 @@ from bot.databases.resources_repo import (
     deposit_resource,
 )
 from bot.models.gm_resources import ResourceType
+from bot.config.bot_config import LOTTERY_MAX_PAYOUT
 
 
 def run_lottery_transaction(
@@ -33,8 +34,7 @@ def run_lottery_transaction(
     if not ok:
         return False, 0, talent_remain
 
-    max_payout = 1205
-    payout = random.randint(1, max_payout)
+    payout = random.randint(1, LOTTERY_MAX_PAYOUT)
 
     new_vault_balance = deposit_resource(
         session,

@@ -3,6 +3,7 @@ from discord.ext import commands
 from bot.config.db_config import create_session
 from bot.config import log_config
 from bot.services.lottery_service import run_lottery_transaction
+from bot.config.bot_config import LOTTERY_EXPECTED_PAYOUT, LOTTERY_MAX_PAYOUT
 from bot.databases.resources_repo import get_lottery_payout_logs
 
 
@@ -36,7 +37,8 @@ class LotteryCog(commands.Cog):
             return
 
         await ctx.send(
-            f"복권 결과: {payout} 지급! 현재 VAULT 잔액: {vault_balance}"
+            f"복권 결과: {payout} 지급! 현재 VAULT 잔액: {vault_balance}\n"
+            f"(현재 설정: 최대상금 {LOTTERY_MAX_PAYOUT}, 1회 기댓값 {LOTTERY_EXPECTED_PAYOUT})"
         )
 
     @commands.command(name="복권통계")
@@ -72,14 +74,14 @@ class LotteryCog(commands.Cog):
             lines.append(f"{y}/{m}/{d} {amt:04d}g")
 
         n = len(logs)
-        expected = n * 603
-        # 수익률 = (총수익 / 기댓값) * 100
-        roi = (total / expected * 100.0) if expected > 0 else 0.0
+        expected = n * LOTTERY_EXPECTED_PAYOUT
+        # 수익률(본전=0%) = ((총수익 / 기댓값) - 1) * 100
+        roi = ((total / expected - 1.0) * 100.0) if expected > 0 else 0.0
 
         history_block = "\n".join(lines)
         summary_block = (
             f"총 사용 달란트: {n}\n"
-            f"기댓값 : {expected}\n"
+            f"기댓값 : {expected} (= {n} * {LOTTERY_EXPECTED_PAYOUT})\n"
             f"총수익금 : {total}\n"
             f"수익률 : {roi:.1f}%"
         )
