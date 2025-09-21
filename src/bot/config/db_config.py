@@ -39,7 +39,7 @@ def init_db() -> None:
     """
     try:
         # 순환 의존성을 피하기 위해 함수 내부에서 임포트합니다.
-        from bot.models import members, gm_resources  # noqa: F401
+        from bot.models import members, gm_resources, horse_race  # noqa: F401
 
         SQLModel.metadata.create_all(engine)
         logger.info("데이터베이스 초기화(SQLModel.metadata.create_all) 완료")

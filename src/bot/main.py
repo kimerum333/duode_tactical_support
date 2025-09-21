@@ -6,6 +6,7 @@ from bot.events import basic_events, member_events
 from bot.events import lottery_events
 from bot.events import admin_events
 from bot.events import vault_events
+from bot.events import horse_race_events
 from bot.events import help_events
 from bot.guards import auth_guard
     
@@ -13,6 +14,7 @@ logger = log_config.setup_logger()
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.reactions = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Cog 중복 로드를 방지하기 위한 플래그
@@ -26,6 +28,7 @@ modules_to_setup = [
     lottery_events,
     admin_events,
     vault_events,
+    horse_race_events,
     help_events,
 ]
 
