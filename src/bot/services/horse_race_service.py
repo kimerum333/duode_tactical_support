@@ -17,10 +17,7 @@ from bot.databases.horse_race_repo import (
 def prepare_race_with_guard(
     session: Session, *, guild_id: int, host_user_id: int, prep_message_id: int
 ):
-    """동일 호스트의 활성 경마(PREPARED/STARTED)가 있으면 생성 금지"""
-    active = get_active_race_by_host(session, guild_id=guild_id, host_user_id=host_user_id)
-    if active is not None:
-        return False, active
+    """경마 생성 (인당 1개 제한 제거)"""
     race = create_race(session, guild_id=guild_id, host_user_id=host_user_id, prep_message_id=prep_message_id)
     return True, race
 
@@ -32,13 +29,22 @@ def get_latest_prepared_race(session: Session, *, guild_id: int, host_user_id: i
 def add_participant_by_reaction(
     session: Session, *, prep_message_id: int, user_id: int, emoji: str | None
 ) -> bool:
+    print(f"🔍 [SERVICE] add_participant_by_reaction called: prep_msg_id={prep_message_id}, user_id={user_id}, emoji={emoji}")
+    
     race = get_prepared_race_by_prep_message_id(session, prep_message_id=prep_message_id)
     if race is None:
+        print(f"❌ [SERVICE] No race found for prep_message_id: {prep_message_id}")
         return False
+    
+    print(f"✅ [SERVICE] Found race: id={race.id}, status={race.status}, host={race.host_user_id}")
+    
     try:
+        print(f"📝 [SERVICE] Calling add_participant with race_id={race.id}, user_id={user_id}, emoji={emoji}")
         ok = add_participant(session, race_id=race.id, user_id=user_id, emoji=emoji)
+        print(f"📝 [SERVICE] add_participant returned: {ok}")
         return ok
     except Exception as e:
+        print(f"❌ [SERVICE] Exception in add_participant: {e}")
         return False
 
 
