@@ -133,13 +133,13 @@ class HorseRaceCog(commands.Cog):
                     print(f"❌ [REACTION ADD] add_participant_by_reaction failed")
                     success_msg = f"<@{payload.user_id}> 참가 신청 실패"
             
-            # 피드백 메시지 전송
-            if channel and isinstance(channel, discord.TextChannel):
-                try:
-                    await channel.send(success_msg)
-                    print(f"📤 [REACTION ADD] Sent feedback message: {success_msg}")
-                except Exception as e:
-                    print(f"❌ [REACTION ADD] Failed to send feedback message: {e}")
+        # 피드백 메시지 전송
+        if channel and isinstance(channel, (discord.TextChannel, discord.Thread)):
+            try:
+                await channel.send(success_msg)
+                print(f"📤 [REACTION ADD] Sent feedback message: {success_msg}")
+            except Exception as e:
+                print(f"❌ [REACTION ADD] Failed to send feedback message: {e}")
         else:
             print(f"❌ [REACTION ADD] Ignoring start/test emoji as join reaction: {emoji_str}")
     @commands.Cog.listener()
@@ -184,7 +184,7 @@ class HorseRaceCog(commands.Cog):
                 ok = remove_participant_by_reaction(session, prep_message_id=payload.message_id, user_id=payload.user_id)
             print(f"📝 [REACTION REMOVE] Remove participant result: {ok}")
             
-            if channel and isinstance(channel, discord.TextChannel):
+            if channel and isinstance(channel, (discord.TextChannel, discord.Thread)):
                 try:
                     await channel.send(f"<@{payload.user_id}> 참가 취소됨 {emoji_str}")
                 except Exception:
@@ -196,7 +196,7 @@ class HorseRaceCog(commands.Cog):
         """경마 시작 리액션 처리"""
         print(f"🏁 [HANDLE START] Processing start reaction for user: {payload.user_id}")
         
-        if not channel or not isinstance(channel, discord.TextChannel):
+        if not channel or not isinstance(channel, (discord.TextChannel, discord.Thread)):
             print("❌ [HANDLE START] Invalid channel")
             return
             
